@@ -31,6 +31,15 @@ class FullQuboSolver(VRPSolver):
         sample = DWaveSolvers.solve_qubo(qubo, solver_type = solver_type)
         solution = VRPSolution(self.problem, sample)
         return solution
+  
+# Solver solves VRP only by QUBO formulation using CQM
+ class CQMSolver(VRPSolver):
+    def solve(self, only_one_const, order_const, solver_type = 'cpu'):
+        qubo = self.problem.get_full_qubo(only_one_const, order_const)
+        sample = DWaveSolvers.CQMSolver(cqm, label='cqm-vrptw')
+        solution = VRPSolution(self.problem, sample)
+
+        return solution
 
 # Solver assumes that every vehicle serves approximately the same number of deliveries.
 # Additional attribute : limit_radius - maximum difference between served number of deliveries
