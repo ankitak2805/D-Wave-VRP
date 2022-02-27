@@ -1,4 +1,4 @@
-from dimod import ConstrainedQuadraticModel
+
 class CQMSolver(VRPSolver):
     def solve(self, )
         qubo = self.problem.get_full_qubo(only_one_const, order_const)
