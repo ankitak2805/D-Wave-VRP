@@ -36,7 +36,7 @@ class FullQuboSolver(VRPSolver):
  class CQMSolver(VRPSolver):
     def solve(self, only_one_const, order_const, solver_type = 'cpu'):
         qubo = self.problem.get_full_qubo(only_one_const, order_const)
-        sample = DWaveSolvers.CQMSolver(cqm, label='cqm-vrptw')
+        sample = DWaveSolvers.solve_qubo(cqm, label='cqm-vrptw')
         solution = VRPSolution(self.problem, sample)
 
         return solution
