@@ -7,9 +7,11 @@ project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(project_dir, 'src'))
 
 from vrp_solvers import FullQuboSolver
+from dimod import ConstrainedQuadraticModel
 import DWaveSolvers
 from input import *
 
+ 
 if __name__ == '__main__':
 
     graph_path = os.path.join(project_dir, 'graphs/small.csv')
@@ -28,6 +30,15 @@ if __name__ == '__main__':
         # Solving problem on FullQuboSolver.
         solver = FullQuboSolver(problem)
         solution = solver.solve(only_one_const, order_const, solver_type = 'cpu')
+        
+         # Solver solves VRP only by QUBO formulation using CQM
+        class CQMSolver(VRPSolver):
+        def solve(self, only_one_const, order_const, solver_type = 'cpu'):
+        qubo = self.problem.get_full_qubo(only_one_const, order_const)
+        sample = DWaveSolvers.solve_qubo(cqm, label='cqm-vrptw')
+        solution = VRPSolution(self.problem, sample)
+
+        return solution
 
         # Checking if solution is correct.
         if solution == None or solution.check() == False:
